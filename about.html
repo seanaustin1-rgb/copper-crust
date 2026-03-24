@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Our Story | The Copper Crust Company</title>
+<style>
+/* ═══════════════════════════════════════
+   COPPER CRUST — SHARED STYLES
+   Mobile-first. All pages use this.
+═══════════════════════════════════════ */
+
+:root {
+  --navy:        #0c1a2e;
+  --navy-mid:    #142438;
+  --navy-light:  #1c3050;
+  --white:       #faf8f4;
+  --cream:       #f2ede5;
+  --copper:      #b5601a;
+  --copper-bright: #c96e24;
+  --copper-light:  #d4845a;
+  --copper-glow:   #e09a6e;
+  --copper-pale:   #f5e4d0;
+  --copper-deep:   #7a3f0e;
+  --text-body:   #3a3028;
+  --text-muted:  #7a8b99;
+  --text-nav:    #ddd5c8;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'DM Sans', system-ui, sans-serif;
+  --ease: cubic-bezier(0.4,0,0.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { font-family: var(--sans); background: var(--white); color: var(--text-body); overflow-x: hidden; line-height: 1.6; }
+img { display: block; max-width: 100%; height: auto; }
+a { text-decoration: none; color: inherit; }
+
+/* ── NAV ── */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(12,26,46,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(181,96,26,0.18);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  max-width: 1200px; margin: 0 auto;
+}
+.nav-logo img {
+  height: 44px; width: auto; object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+.nav-order {
+  background: var(--copper);
+  color: #fff;
+  font-size: 0.72rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.6rem 1.1rem; border-radius: 3px;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.nav-order:hover { background: var(--copper-bright); }
+.nav-hamburger {
+  display: flex; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 6px; margin-left: 0.75rem;
+  background: none; border: none;
+}
+.nav-hamburger span { display: block; width: 20px; height: 1.5px; background: var(--text-nav); transition: 0.25s; }
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+.nav-drawer {
+  display: none; flex-direction: column;
+  background: rgba(12,26,46,0.99);
+  border-top: 1px solid rgba(181,96,26,0.12);
+  padding: 1rem 1.25rem 1.5rem;
+}
+.nav-drawer.open { display: flex; }
+.nav-drawer a {
+  font-size: 1rem; font-weight: 400;
+  color: var(--text-nav);
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: color 0.2s;
+}
+.nav-drawer a:last-child { border-bottom: none; }
+.nav-drawer a:hover, .nav-drawer a.active { color: var(--copper-glow); }
+
+/* ── FLOATING ORDER BTN ── */
+.order-float {
+  position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 300;
+  background: var(--copper);
+  color: #fff;
+  font-size: 0.72rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.8rem 1.3rem; border-radius: 50px;
+  box-shadow: 0 4px 20px rgba(181,96,26,0.5);
+  display: flex; align-items: center; gap: 0.4rem;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), background 0.2s;
+  pointer-events: none;
+}
+.order-float.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.order-float:hover { background: var(--copper-bright); }
+.order-float svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+/* ── PAGE WRAPPER ── */
+.page-body { padding-top: 64px; } /* nav height offset */
+
+/* ── SECTION LABEL ── */
+.label {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-size: 0.68rem; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--copper); margin-bottom: 0.75rem;
+}
+.label::before { content: ''; display: block; width: 20px; height: 1px; background: var(--copper); }
+
+/* ── HEADINGS ── */
+.display {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 8vw, 4rem);
+  font-weight: 300; line-height: 1.08;
+  color: var(--navy);
+}
+.display em { font-style: italic; color: var(--copper); }
+.display-white { color: var(--white); }
+.display-white em { color: var(--copper-glow); }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.85rem 1.6rem; border-radius: 3px;
+  transition: 0.2s; cursor: pointer; border: none;
+}
+.btn-copper { background: var(--copper); color: #fff; }
+.btn-copper:hover { background: var(--copper-bright); }
+.btn-outline { background: transparent; color: var(--text-nav); border: 1px solid rgba(221,213,200,0.3); }
+.btn-outline:hover { border-color: var(--copper-glow); color: var(--copper-glow); }
+
+/* ── FOOTER ── */
+.site-footer {
+  background: var(--navy);
+  border-top: 1px solid rgba(181,96,26,0.18);
+  padding: 2.5rem 1.25rem 1.5rem;
+}
+.footer-logo img {
+  height: 48px; width: auto;
+  filter: brightness(0) invert(1);
+  margin-bottom: 0.75rem;
+}
+.footer-tagline {
+  font-size: 0.82rem; color: var(--text-muted);
+  font-weight: 300; line-height: 1.6;
+  margin-bottom: 1.5rem; max-width: 260px;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.5rem; margin-bottom: 2rem;
+}
+.footer-col h5 {
+  font-size: 0.65rem; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--copper-light); margin-bottom: 0.75rem;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li {
+  font-size: 0.82rem; color: var(--text-muted);
+  margin-bottom: 0.4rem; font-weight: 300;
+}
+.footer-col ul li a { color: var(--text-muted); transition: color 0.2s; }
+.footer-col ul li a:hover { color: var(--copper-glow); }
+.footer-hours-row { display: flex; justify-content: space-between; gap: 0.5rem; }
+.footer-hours-row .day { color: var(--text-nav); }
+.footer-bottom {
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  display: flex; flex-direction: column; gap: 0.75rem;
+}
+.footer-order { align-self: flex-start; }
+.footer-copy { font-size: 0.68rem; color: rgba(139,160,184,0.45); }
+
+/* ── TICKER ── */
+.ticker-bar { background: var(--copper); overflow: hidden; padding: 0.6rem 0; white-space: nowrap; }
+.ticker-track { display: inline-flex; animation: ticker 28s linear infinite; }
+@keyframes ticker { to { transform: translateX(-50%); } }
+.ticker-track span { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.9); padding: 0 1.75rem; }
+.ticker-track .dot { color: rgba(255,255,255,0.35); padding: 0; }
+
+/* ── UTILITY ── */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; }
+.section { padding: 3rem 0; }
+.section-lg { padding: 4rem 0; }
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+.about-hero { background: var(--navy); padding: 5rem 1.25rem 3rem; }
+.about-hero .label { color: var(--copper-glow); }
+.about-hero .label::before { background: var(--copper-glow); }
+.pull-quote {
+  font-family: var(--serif); font-style: italic;
+  font-size: clamp(1.2rem, 5vw, 1.7rem);
+  font-weight: 300; line-height: 1.45;
+  color: var(--copper-glow); margin-top: 1.5rem;
+  padding-left: 1rem; border-left: 2px solid var(--copper);
+}
+.about-body { background: var(--white); }
+.about-section { padding: 2.5rem 1.25rem; border-bottom: 1px solid rgba(181,96,26,0.08); }
+.about-section:last-child { border-bottom: none; }
+.about-section h2 {
+  font-family: var(--serif); font-size: 1.5rem; font-weight: 300;
+  color: var(--navy); margin-bottom: 0.75rem;
+}
+.about-section h2 em { font-style: italic; color: var(--copper); }
+.about-section p {
+  font-size: 0.9rem; color: var(--text-body); line-height: 1.75;
+  margin-bottom: 0.9rem; font-weight: 300;
+}
+.about-section p:last-child { margin-bottom: 0; }
+.about-section strong { font-weight: 500; color: var(--navy); }
+.values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.25rem; }
+.value-tile {
+  background: var(--cream); border-radius: 4px; padding: 1.1rem;
+  border-bottom: 2px solid var(--copper);
+}
+.value-num { font-family: var(--serif); font-style: italic; font-size: 0.85rem; color: var(--copper); margin-bottom: 0.3rem; }
+.value-title { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--navy); margin-bottom: 0.3rem; }
+.value-text { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
+.team-cards { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.25rem; }
+.team-card { background: var(--cream); border-radius: 4px; padding: 1.25rem; }
+.team-name { font-family: var(--serif); font-size: 1.1rem; color: var(--navy); margin-bottom: 0.15rem; }
+.team-role { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--copper); margin-bottom: 0.6rem; }
+.team-bio { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
+.about-cta { background: var(--navy); padding: 2.5rem 1.25rem; text-align: center; }
+.about-cta p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem; font-weight: 300; line-height: 1.65; }
+.about-cta-btns { display: flex; flex-direction: column; gap: 0.75rem; max-width: 260px; margin: 0 auto; }
+.about-cta-btns .btn { justify-content: center; }
+</style>
+</head>
+<body class="page-body">
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="https://images.getbento.com/accounts/1ac17c3175e907cac7e73dc92fb18546/media/images/logo.png?w=1000&fit=max&auto=compress,format&h=1000" alt="Copper Crust"/></a>
+    <div style="display:flex;align-items:center;gap:0.5rem;">
+      <a href="https://copper-crust-co-york.cloveronline.com" class="nav-order">Order Online</a>
+      <button class="nav-hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="nav-drawer" id="drawer">
+    <a href="index.html">Home</a>
+    <a href="menu.html">Menu</a>
+    <a href="about.html" class="active">Our Story</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<a href="https://copper-crust-co-york.cloveronline.com" class="order-float" id="floatBtn">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+  Order Now
+</a>
+
+<section class="about-hero">
+  <div class="container">
+    <p class="label">Our Story</p>
+    <h1 class="display display-white">The Art Behind<br><em>Every Bake</em></h1>
+    <p class="pull-quote">"The 'Copper' in our name is that exact moment — the caramelized hue of a perfect stone-hearth bake."</p>
+  </div>
+</section>
+
+<div class="about-body">
+  <div class="container">
+
+    <div class="about-section">
+      <p class="label">How It Started</p>
+      <h2>From the CIA to <em>York, PA</em></h2>
+      <p>The Copper Crust Company was founded by <strong>Sean and Nicole Austin</strong>, graduates of the Culinary Institute of America whose culinary vision was shaped by years working in the high-pressure kitchens of New York City and Washington D.C. — and by formative travels through Portugal, Italy, and France, where artisan baking is a way of life.</p>
+      <p>Those experiences — watching a baker in Lisbon pull a tray of perfectly bronzed pastéis from a wood-fired oven, eating croque-monsieurs in a Parisian brasserie at 7am, mastering the long ferment of Neapolitan pizza dough — all live inside everything that comes out of the Copper Crust kitchen.</p>
+    </div>
+
+    <div class="about-section">
+      <p class="label">The Name</p>
+      <h2>What <em>"Copper"</em> Means</h2>
+      <p>The "Copper" in our name refers to a very specific moment — the caramelized, burnished hue of a stone-hearth bake when heat, time, and craft converge into something extraordinary.</p>
+      <p>It's the moment a croissant achieves that deep amber-copper sheen. The instant a pizza crust blisters and chars at the edges. That color is not an accident — it's the result of doing things the right way, without shortcuts.</p>
+      <p>While we source a few specific traditional rolls — our Kaiser and Sub — to ensure the perfect sandwich bite, our heart belongs to that hearth and everything that comes out of it.</p>
+    </div>
+
+    <div class="about-section">
+      <p class="label">What We Stand For</p>
+      <h2>Our <em>Craft Values</em></h2>
+      <div class="values-grid">
+        <div class="value-tile"><p class="value-num">I</p><p class="value-title">CIA Trained</p><p class="value-text">Formally trained culinary professionals. No shortcuts, no half-measures.</p></div>
+        <div class="value-tile"><p class="value-num">II</p><p class="value-title">Scratch Daily</p><p class="value-text">No frozen dough. No mixes. Every item baked fresh each morning.</p></div>
+        <div class="value-tile"><p class="value-num">III</p><p class="value-title">Stone Hearth</p><p class="value-text">Our pizzas and breads finish on a stone hearth for that signature crust.</p></div>
+        <div class="value-tile"><p class="value-num">IV</p><p class="value-title">Local First</p><p class="value-text">Seasonal ingredients from local farms and producers whenever possible.</p></div>
+      </div>
+    </div>
+
+    <div class="about-section">
+      <p class="label">The People</p>
+      <h2>Meet the <em>Austins</em></h2>
+      <div class="team-cards">
+        <div class="team-card">
+          <p class="team-name">Sean Austin</p>
+          <p class="team-role">Co-Founder · Head Baker &amp; Pizzaiolo</p>
+          <p class="team-bio">CIA graduate with a background in hearth baking, pasta, and artisan pizza. Sean's approach is rooted in European technique — long ferments, natural leavening, and the discipline to let time do its work.</p>
+        </div>
+        <div class="team-card">
+          <p class="team-name">Nicole Austin</p>
+          <p class="team-role">Co-Founder · Pastry &amp; Operations</p>
+          <p class="team-bio">CIA-trained pastry chef with an eye for precision and flavor. Nicole leads the bakery program and oversees daily operations, bringing the same standard of excellence to every croissant, pie, and seasonal special.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="about-cta">
+  <div class="container">
+    <p>Come taste what we're talking about. We're at Market on George in York, PA — Tuesday through Sunday.</p>
+    <div class="about-cta-btns">
+      <a href="https://copper-crust-co-york.cloveronline.com" class="btn btn-copper">Order Online →</a>
+      <a href="contact.html" class="btn btn-outline">Find Us &amp; Contact</a>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-logo"><img src="https://images.getbento.com/accounts/1ac17c3175e907cac7e73dc92fb18546/media/images/logo.png?w=1000&fit=max&auto=compress,format&h=1000" alt="Copper Crust"/></div>
+    <p class="footer-tagline">Artisan bakery, deli & pizza at Market on George, York PA.</p>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h5>Hours</h5>
+        <ul>
+          <li class="footer-hours-row"><span class="day">Tue–Sat</span><span>7am–8pm</span></li>
+          <li class="footer-hours-row"><span class="day">Sunday</span><span>7am–1pm</span></li>
+          <li class="footer-hours-row"><span class="day">Monday</span><span>Closed</span></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Navigate</h5>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <a href="https://copper-crust-co-york.cloveronline.com" class="btn btn-copper footer-order">Order Online →</a>
+      <p class="footer-copy">© 2025 The Copper Crust Company. York, PA.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const burger = document.getElementById('burger');
+const drawer = document.getElementById('drawer');
+burger.addEventListener('click', () => { burger.classList.toggle('open'); drawer.classList.toggle('open'); });
+const floatBtn = document.getElementById('floatBtn');
+window.addEventListener('scroll', () => { floatBtn.classList.toggle('show', window.scrollY > 200); }, { passive: true });
+</script>
+</body>
+</html>
